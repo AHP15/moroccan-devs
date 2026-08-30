@@ -1,0 +1,24 @@
+---
+/**
+ * Every Arabic post carries an English abstract. Two audiences need it: non-Arabic-reading
+ * recruiters and colleagues who want to know what a post covers, and search engines
+ * indexing the site for English queries about Arabic SERP data.
+ */
+interface Props { title: string; abstract: string }
+const { title, abstract } = Astro.props;
+---
+
+<aside
+  dir="ltr"
+  lang="en"
+  class="my-10 rounded-xl border border-[var(--border)] bg-[var(--bg-sunken)] p-5 text-left"
+>
+  <p class="m-0 mb-2 flex items-center gap-2 text-xs font-semibold tracking-wide text-[var(--fg-subtle)] uppercase">
+    <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+      <path d="M5 8h14M5 8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2M9 12h6M7 16h10" stroke-linecap="round" />
+    </svg>
+    English summary
+  </p>
+  <p class="m-0 mb-1.5 text-[15px] font-semibold text-[var(--fg)]">{title}</p>
+  <p class="m-0 text-[15px] leading-relaxed text-[var(--fg-muted)]">{abstract}</p>
+</aside>

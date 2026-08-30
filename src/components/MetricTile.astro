@@ -1,0 +1,14 @@
+---
+interface Props { value: string | null; label: string; note?: string }
+const { value, label, note } = Astro.props;
+const measured = value !== null;
+---
+<div class="rounded-xl border border-[var(--border)] bg-[var(--bg-raised)] p-5">
+  <p class:list={[
+    'm-0 font-bold tabular-nums',
+    measured ? 'text-3xl text-[var(--fg)]' : 'text-2xl text-[var(--fg-subtle)]',
+  ]}>{measured ? value : '—'}</p>
+  <p class="m-0 mt-1.5 text-sm font-semibold text-[var(--fg)]">{label}</p>
+  {note && <p class="m-0 mt-1 text-[13px] leading-snug text-[var(--fg-subtle)]">{note}</p>}
+  {!measured && <p class="m-0 mt-1 text-[13px] text-[var(--fg-subtle)]">Not yet measured</p>}
+</div>

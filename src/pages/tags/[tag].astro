@@ -1,0 +1,32 @@
+---
+import type { InferGetStaticPropsType } from 'astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PostCard from '~/components/PostCard.astro';
+import { getPublishedPosts, getAllTags, readingTime } from '~/lib/posts';
+import { SITE } from '~/consts';
+
+export const getStaticPaths = async () => {
+  const [tags, posts] = await Promise.all([getAllTags(), getPublishedPosts()]);
+  return tags.map(({ tag, slug }) => ({
+    params: { tag: slug },
+    props: { tag, posts: posts.filter((p) => p.data.tags.includes(tag)) },
+  }));
+};
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { tag, posts } = Astro.props as Props;
+---
+
+<BaseLayout
+  title={`${tag} — ${SITE.name}`}
+  description={`مقالات بالعربية حول ${tag}.`}
+>
+  <section class="mx-auto max-w-3xl px-5 pt-14">
+    <p class="m-0 mb-1 text-sm text-[var(--fg-subtle)]">
+      <a href="/tags" class="text-[var(--fg-subtle)] no-underline hover:text-[var(--accent)]">المواضيع</a>
+    </p>
+    <h1 class="m-0 mb-2 text-3xl font-bold">{tag}</h1>
+    <p class="m-0 text-[var(--fg-muted)]">{posts.length} مقال</p>
+    {posts.map((post) => <PostCard post={post} readingTime={readingTime(post.body)} />)}
+  </section>
+</BaseLayout>

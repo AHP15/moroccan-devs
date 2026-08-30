@@ -1,0 +1,35 @@
+---
+import BaseHead from '~/components/BaseHead.astro';
+import Header from '~/components/Header.astro';
+import Footer from '~/components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  type?: 'website' | 'article';
+  publishedTime?: Date;
+  modifiedTime?: Date;
+  lang?: 'ar' | 'en';
+  noindex?: boolean;
+}
+const { lang = 'ar', ...head } = Astro.props;
+const dir = lang === 'ar' ? 'rtl' : 'ltr';
+---
+
+<html lang={lang} dir={dir} data-theme="light">
+  <head>
+    <BaseHead {...head} lang={lang} />
+  </head>
+  <body class="flex min-h-screen flex-col">
+    <a
+      href="#main"
+      class="sr-only rounded-lg bg-[var(--accent)] px-4 py-2 text-white focus:not-sr-only focus:absolute focus:top-3 focus:start-3 focus:z-50"
+    >تخطَّ إلى المحتوى</a>
+    <Header />
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

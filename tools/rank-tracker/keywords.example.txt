@@ -1,0 +1,7 @@
+# One Arabic keyword per line. Lines starting with # are ignored.
+# Start with 5-10 commercial-intent keywords you actually care about.
+استضافة مواقع
+تعلم البرمجة
+أفضل لغة برمجة
+واجهة برمجة التطبيقات
+استخراج بيانات المواقع

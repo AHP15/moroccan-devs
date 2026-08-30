@@ -1,0 +1,141 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { MarkdownHeading } from 'astro';
+import BaseLayout from './BaseLayout.astro';
+import FormattedDate from '~/components/FormattedDate.astro';
+import TableOfContents from '~/components/TableOfContents.astro';
+import EnglishAbstract from '~/components/EnglishAbstract.astro';
+import Newsletter from '~/components/Newsletter.astro';
+import ShareLinks from '~/components/ShareLinks.astro';
+import { SITE, AUTHOR, UI_AR } from '~/consts';
+import { tagSlug } from '~/lib/posts';
+
+interface Props {
+  post: CollectionEntry<'posts'>;
+  headings: MarkdownHeading[];
+  readingTime: number;
+  prev?: { id: string; title: string };
+  next?: { id: string; title: string };
+}
+const { post, headings, readingTime, prev, next } = Astro.props;
+const { title, description, titleEn, abstractEn, pubDate, updatedDate, tags } = post.data;
+
+const url = new URL(`/posts/${post.id}`, Astro.site).href;
+const ogImage = `/og/posts/${post.id}.png`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'TechArticle',
+  headline: title,
+  alternativeHeadline: titleEn,
+  description,
+  abstract: abstractEn,
+  inLanguage: 'ar',
+  datePublished: pubDate.toISOString(),
+  dateModified: (updatedDate ?? pubDate).toISOString(),
+  author: { '@type': 'Person', name: AUTHOR.name, email: AUTHOR.email },
+  publisher: { '@type': 'Organization', name: SITE.name },
+  mainEntityOfPage: url,
+  image: new URL(ogImage, SITE.url).href,
+  keywords: tags.join(', '),
+};
+---
+
+<BaseLayout
+  title={`${title} — ${SITE.name}`}
+  description={description}
+  ogImage={ogImage}
+  type="article"
+  publishedTime={pubDate}
+  modifiedTime={updatedDate}
+>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+
+  <article class="mx-auto max-w-3xl px-5 pt-10 pb-4">
+    <header class="mb-8">
+      <h1 class="m-0 mb-4 text-3xl leading-tight font-bold sm:text-4xl">{title}</h1>
+      <p class="m-0 mb-4 text-lg leading-relaxed text-[var(--fg-muted)]">{description}</p>
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-[var(--fg-subtle)]">
+        <span>{UI_AR.publishedOn} <FormattedDate date={pubDate} /></span>
+        <span aria-hidden="true">·</span>
+        <span>{UI_AR.readingTime(readingTime)}</span>
+        {updatedDate && (
+          <><span aria-hidden="true">·</span><span>{UI_AR.updatedOn} <FormattedDate date={updatedDate} /></span></>
+        )}
+      </div>
+    </header>
+
+    <EnglishAbstract title={titleEn} abstract={abstractEn} />
+    <TableOfContents headings={headings} />
+
+    <div class="prose">
+      <slot />
+    </div>
+
+    <footer class="mt-12 border-t border-[var(--border)] pt-6">
+      {tags.length > 0 && (
+        <ul class="m-0 mb-6 flex list-none flex-wrap gap-2 p-0">
+          {tags.map((tag) => (
+            <li>
+              <a
+                href={`/tags/${tagSlug(tag)}`}
+                class="inline-block rounded-md border border-[var(--border)] px-2.5 py-1 text-sm text-[var(--fg-muted)] no-underline transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
+              >{tag}</a>
+            </li>
+          ))}
+        </ul>
+      )}
+      <ShareLinks title={title} url={url} />
+    </footer>
+
+    <Newsletter />
+
+    {(prev || next) && (
+      <nav class="grid gap-3 border-t border-[var(--border)] pt-8 sm:grid-cols-2" aria-label="التنقّل بين المقالات">
+        {prev ? (
+          <a href={`/posts/${prev.id}`} class="rounded-xl border border-[var(--border)] p-4 no-underline transition-colors hover:border-[var(--accent)]">
+            <span class="block text-[13px] text-[var(--fg-subtle)]">{UI_AR.prevPost}</span>
+            <span class="mt-1 block font-semibold text-[var(--fg)]">{prev.title}</span>
+          </a>
+        ) : <div />}
+        {next && (
+          <a href={`/posts/${next.id}`} class="rounded-xl border border-[var(--border)] p-4 no-underline transition-colors hover:border-[var(--accent)] sm:text-end">
+            <span class="block text-[13px] text-[var(--fg-subtle)]">{UI_AR.nextPost}</span>
+            <span class="mt-1 block font-semibold text-[var(--fg)]">{next.title}</span>
+          </a>
+        )}
+      </nav>
+    )}
+  </article>
+</BaseLayout>
+
+<script>
+  // Copy button on every code block. Added from JS so no post has to opt in.
+  document.querySelectorAll<HTMLPreElement>('.prose pre').forEach((pre) => {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'relative';
+    pre.parentNode?.insertBefore(wrapper, pre);
+    wrapper.appendChild(pre);
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.textContent = 'نسخ';
+    btn.setAttribute('aria-label', 'نسخ الكود');
+    btn.className =
+      'absolute top-2 end-2 rounded-md border border-[var(--border-strong)] bg-[var(--bg-raised)] px-2 py-1 text-xs text-[var(--fg-muted)] opacity-0 transition-opacity hover:text-[var(--fg)] focus-visible:opacity-100';
+    wrapper.addEventListener('mouseenter', () => (btn.style.opacity = '1'));
+    wrapper.addEventListener('mouseleave', () => (btn.style.opacity = '0'));
+
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(pre.innerText);
+        btn.textContent = 'تم النسخ';
+        setTimeout(() => (btn.textContent = 'نسخ'), 1600);
+      } catch {
+        btn.textContent = 'تعذّر النسخ';
+        setTimeout(() => (btn.textContent = 'نسخ'), 1600);
+      }
+    });
+    wrapper.appendChild(btn);
+  });
+</script>

@@ -1,0 +1,27 @@
+---
+import { SITE, AUTHOR } from '~/consts';
+const year = new Date().getFullYear();
+const links = [
+  { href: AUTHOR.github, label: 'GitHub' },
+  { href: AUTHOR.x, label: 'X' },
+  { href: AUTHOR.linkedin, label: 'LinkedIn' },
+  { href: '/rss.xml', label: 'RSS' },
+  // A bare profile domain with no path is an unset placeholder, not a real profile —
+  // drop it rather than shipping a link that goes nowhere.
+].filter((l) => l.href && new URL(l.href, SITE.url).pathname !== '/');
+---
+
+<footer class="mt-24 border-t border-[var(--border)] bg-[var(--bg-sunken)]">
+  <div class="mx-auto flex max-w-3xl flex-col gap-4 px-5 py-10 text-sm text-[var(--fg-muted)] sm:flex-row sm:items-center sm:justify-between">
+    <p class="m-0">
+      © {year} <bdi dir="ltr">{SITE.name}</bdi> — {SITE.taglineAr}
+    </p>
+    <ul class="m-0 flex list-none gap-4 p-0">
+      {links.map((l) => (
+        <li>
+          <a class="text-[var(--fg-muted)] no-underline transition-colors hover:text-[var(--accent)]" href={l.href} dir="ltr">{l.label}</a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</footer>

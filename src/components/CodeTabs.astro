@@ -1,0 +1,99 @@
+---
+/**
+ * Multi-language code samples, mirroring how SerpApi's own docs present snippets.
+ * The reader's chosen language persists across posts, so a Python developer never
+ * has to re-click their tab.
+ *
+ * Usage:
+ *   <CodeTabs tabs={['Python', 'JavaScript', 'cURL']}>
+ *     <Fragment slot="python">```py ... ```</Fragment>
+ *   </CodeTabs>
+ */
+interface Props { tabs: string[] }
+const { tabs } = Astro.props;
+const slug = (t: string) => t.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+const group = Math.random().toString(36).slice(2, 8);
+---
+
+<div class="code-tabs my-6 overflow-hidden rounded-xl border border-[var(--border)]" dir="ltr">
+  <div role="tablist" aria-label="Code language" class="flex gap-1 overflow-x-auto border-b border-[var(--border)] bg-[var(--bg-sunken)] px-2 pt-2">
+    {tabs.map((tab, i) => (
+      <button
+        role="tab"
+        type="button"
+        id={`tab-${group}-${slug(tab)}`}
+        data-lang={slug(tab)}
+        aria-controls={`panel-${group}-${slug(tab)}`}
+        aria-selected={i === 0 ? 'true' : 'false'}
+        tabindex={i === 0 ? 0 : -1}
+        class="shrink-0 rounded-t-lg border-b-2 border-transparent px-3.5 py-2 text-[13px] font-medium text-[var(--fg-muted)] transition-colors aria-selected:border-[var(--accent)] aria-selected:text-[var(--fg)]"
+      >{tab}</button>
+    ))}
+  </div>
+  {tabs.map((tab, i) => (
+    <div
+      role="tabpanel"
+      id={`panel-${group}-${slug(tab)}`}
+      data-lang={slug(tab)}
+      aria-labelledby={`tab-${group}-${slug(tab)}`}
+      hidden={i !== 0}
+      class="code-tabs__panel"
+    >
+      <slot name={slug(tab)} />
+    </div>
+  ))}
+</div>
+
+<style is:global>
+  /* The tab frame already draws the border, so the code block should not draw a second one. */
+  .code-tabs__panel pre {
+    border: 0 !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+  }
+</style>
+
+<script>
+  const KEY = 'preferred-code-lang';
+
+  function select(group: HTMLElement, lang: string) {
+    const tabs = group.querySelectorAll<HTMLElement>('[role="tab"]');
+    const panels = group.querySelectorAll<HTMLElement>('[role="tabpanel"]');
+    if (![...tabs].some((t) => t.dataset.lang === lang)) return false;
+
+    tabs.forEach((t) => {
+      const on = t.dataset.lang === lang;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+    });
+    panels.forEach((p) => { p.hidden = p.dataset.lang !== lang; });
+    return true;
+  }
+
+  function selectEverywhere(lang: string) {
+    document.querySelectorAll<HTMLElement>('.code-tabs').forEach((g) => select(g, lang));
+    try { localStorage.setItem(KEY, lang); } catch { /* private mode */ }
+  }
+
+  document.querySelectorAll<HTMLElement>('.code-tabs').forEach((group) => {
+    group.addEventListener('click', (e) => {
+      const tab = (e.target as HTMLElement).closest<HTMLElement>('[role="tab"]');
+      if (tab?.dataset.lang) selectEverywhere(tab.dataset.lang);
+    });
+
+    group.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      const tabs = [...group.querySelectorAll<HTMLElement>('[role="tab"]')];
+      const current = tabs.findIndex((t) => t.getAttribute('aria-selected') === 'true');
+      const step = e.key === 'ArrowRight' ? 1 : -1;
+      const next = tabs[(current + step + tabs.length) % tabs.length];
+      if (next?.dataset.lang) { selectEverywhere(next.dataset.lang); next.focus(); }
+      e.preventDefault();
+    });
+  });
+
+  try {
+    const saved = localStorage.getItem(KEY);
+    if (saved) document.querySelectorAll<HTMLElement>('.code-tabs').forEach((g) => select(g, saved));
+  } catch { /* private mode */ }
+</script>

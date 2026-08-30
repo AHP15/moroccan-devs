@@ -1,0 +1,14 @@
+---
+interface Props { date: Date }
+const { date } = Astro.props;
+
+// Arabic month names with Western (Latin) digits, which is what Arabic developer
+// audiences overwhelmingly read online — Eastern Arabic numerals would look archaic here.
+const formatted = new Intl.DateTimeFormat('ar', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  numberingSystem: 'latn',
+}).format(date);
+---
+<time datetime={date.toISOString()}>{formatted}</time>

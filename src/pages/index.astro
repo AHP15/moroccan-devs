@@ -1,0 +1,36 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PostCard from '~/components/PostCard.astro';
+import Newsletter from '~/components/Newsletter.astro';
+import { getPublishedPosts, withFeaturedFirst, readingTime } from '~/lib/posts';
+import { SITE, UI_AR } from '~/consts';
+
+const posts = withFeaturedFirst(await getPublishedPosts());
+---
+
+<BaseLayout title={`${SITE.name} — ${SITE.taglineAr}`} description={SITE.descriptionAr}>
+  <section class="mx-auto max-w-3xl px-5 pt-14 pb-4">
+    <h1 class="m-0 mb-4 text-3xl leading-tight font-bold sm:text-4xl">
+      {SITE.taglineAr}
+    </h1>
+    <p class="m-0 max-w-2xl text-lg leading-relaxed text-[var(--fg-muted)]">
+      دروس عملية بالعربية حول واجهات برمجة التطبيقات، واستخراج بيانات الويب، وتحليل نتائج محرّكات البحث.
+      المصطلحات التقنية والأكواد تبقى بالإنجليزية، لأنّ هذا ما يبحث عنه المطوّر فعلاً.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-5 pb-4">
+    <h2 class="mt-12 mb-1 text-sm font-semibold tracking-wide text-[var(--fg-subtle)] uppercase">
+      {UI_AR.latestPosts}
+    </h2>
+    {posts.length === 0 ? (
+      <p class="py-8 text-[var(--fg-muted)]">لا توجد مقالات منشورة بعد.</p>
+    ) : (
+      posts.map((post) => <PostCard post={post} readingTime={readingTime(post.body)} />)
+    )}
+  </section>
+
+  <div class="mx-auto max-w-3xl px-5">
+    <Newsletter />
+  </div>
+</BaseLayout>

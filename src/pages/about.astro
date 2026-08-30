@@ -1,0 +1,40 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Newsletter from '~/components/Newsletter.astro';
+import { SITE, AUTHOR } from '~/consts';
+---
+
+<BaseLayout title={`من أنا — ${SITE.name}`} description={AUTHOR.bioAr}>
+  <section class="mx-auto max-w-3xl px-5 pt-14">
+    <h1 class="m-0 mb-6 text-3xl font-bold">من أنا</h1>
+    <div class="prose">
+      <p>
+        أنا <strong>{AUTHOR.nameAr}</strong>، مطوّر ويب من المغرب. أنشأتُ
+        <bdi dir="ltr">{SITE.name}</bdi> لسبب بسيط: المحتوى التقني العربي الجاد شحيح.
+        حين تبحث عن شرح عربي لـ web scraping أو للتعامل مع REST API، تجد إمّا ترجمة آلية
+        رديئة، أو مقالاً سطحياً بلا سطر كود واحد.
+      </p>
+      <h2>لماذا العربية؟</h2>
+      <p>
+        يتحدّث العربية أكثر من 400 مليون شخص، ومع ذلك فإنّ حصّة المحتوى التقني العربي على الإنترنت
+        ضئيلة. النتيجة أنّ المطوّر العربي يتعلّم بلغة ثانية، ويدفع ضريبة إدراكية إضافية في كل مفهوم جديد.
+        هذه المدوّنة محاولة لتقليص تلك الفجوة في مجال واحد أعرفه جيداً: البيانات وواجهات البرمجة.
+      </p>
+      <h2>قاعدة التحرير</h2>
+      <p>
+        الشرح بالعربية الفصحى المبسّطة، والمصطلحات التقنية والأكواد بالإنجليزية.
+        لا أترجم <bdi dir="ltr">rate limiting</bdi> إلى «تحديد المعدّل» ثم أتركك عاجزاً عن البحث عنها في
+        <bdi dir="ltr">Google</bdi>. المصطلح يبقى كما هو، والشرح حوله بالعربية.
+      </p>
+      <p>
+        الاسم مغربي لأنّني مغربي، لكنّ الجمهور عربي: القاهرة والرياض ودبي وعمّان وتونس والدار البيضاء.
+        الكتابة بالفصحى وليست بالدارجة، حتى يقرأها الجميع.
+      </p>
+      <h2>تواصل</h2>
+      <p>
+        للتواصل: <a href={`mailto:${AUTHOR.email}`} dir="ltr">{AUTHOR.email}</a>
+      </p>
+    </div>
+    <Newsletter />
+  </section>
+</BaseLayout>

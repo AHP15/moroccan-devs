@@ -1,0 +1,26 @@
+---
+import { UI_AR } from '~/consts';
+interface Props { title: string; url: string }
+const { title, url } = Astro.props;
+
+const targets = [
+  { label: 'X', href: `https://x.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}` },
+  { label: 'LinkedIn', href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}` },
+  { label: 'WhatsApp', href: `https://wa.me/?text=${encodeURIComponent(`${title} ${url}`)}` },
+  { label: 'Telegram', href: `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}` },
+];
+---
+
+<div class="flex flex-wrap items-center gap-2.5 text-sm">
+  <span class="text-[var(--fg-muted)]">{UI_AR.share}:</span>
+  {targets.map((t) => (
+    <a
+      href={t.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      dir="ltr"
+      data-umami-event={`share-${t.label.toLowerCase()}`}
+      class="rounded-lg border border-[var(--border)] px-3 py-1.5 text-[var(--fg-muted)] no-underline transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
+    >{t.label}</a>
+  ))}
+</div>

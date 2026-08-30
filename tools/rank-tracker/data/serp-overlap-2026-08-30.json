@@ -1,0 +1,342 @@
+[
+  {
+    "keyword": "استضافة مواقع",
+    "per_market": {
+      "eg": [
+        "egyhosting.com",
+        "ae.godaddy.com",
+        "sotmasr.com",
+        "hhost.eg",
+        "geexar.com",
+        "ar.wikipedia.org",
+        "amfws.com",
+        "google.com.eg",
+        "hostwega.com"
+      ],
+      "sa": [
+        "dimofinf.sa",
+        "ae.godaddy.com",
+        "sahara.com",
+        "dukanksa.com",
+        "dc.net.sa",
+        "masardigital.com.sa",
+        "sahabah.com.sa",
+        "google.com.sa",
+        "almasader.sa"
+      ],
+      "ae": [
+        "ae.godaddy.com",
+        "aws.amazon.com",
+        "canadahitech.com",
+        "firebase.google.com",
+        "soharhost.com",
+        "ar.wikipedia.org",
+        "google.ae",
+        "dc.net.sa",
+        "hostingarabi.com"
+      ]
+    },
+    "overlap": {
+      "eg/sa": 0.06,
+      "eg/ae": 0.12,
+      "sa/ae": 0.12
+    },
+    "shared": [
+      "ae.godaddy.com"
+    ],
+    "unique": {
+      "eg": [
+        "amfws.com",
+        "egyhosting.com",
+        "geexar.com",
+        "google.com.eg",
+        "hhost.eg",
+        "hostwega.com",
+        "sotmasr.com"
+      ],
+      "sa": [
+        "almasader.sa",
+        "dimofinf.sa",
+        "dukanksa.com",
+        "google.com.sa",
+        "masardigital.com.sa",
+        "sahabah.com.sa",
+        "sahara.com"
+      ],
+      "ae": [
+        "aws.amazon.com",
+        "canadahitech.com",
+        "firebase.google.com",
+        "google.ae",
+        "hostingarabi.com",
+        "soharhost.com"
+      ]
+    }
+  },
+  {
+    "keyword": "تصميم مواقع",
+    "per_market": {
+      "eg": [
+        "canva.com",
+        "ar.site123.com",
+        "wuilt.com",
+        "sndian.com",
+        "khamsat.com",
+        "ar.wikipedia.org",
+        "method.com.eg"
+      ],
+      "sa": [
+        "canva.com",
+        "teksa-sa.com",
+        "khamsat.com",
+        "wuilt.com",
+        "sndian.com",
+        "etharweb.com",
+        "dimofinf.sa",
+        "ar.site123.com",
+        "ar.wikipedia.org"
+      ],
+      "ae": [
+        "canadahitech.com",
+        "useouae.ae",
+        "canva.com",
+        "sndian.com",
+        "7gmedia.com",
+        "pinterest.com",
+        "wuilt.com",
+        "khamsat.com"
+      ]
+    },
+    "overlap": {
+      "eg/sa": 0.6,
+      "eg/ae": 0.36,
+      "sa/ae": 0.31
+    },
+    "shared": [
+      "canva.com",
+      "khamsat.com",
+      "sndian.com",
+      "wuilt.com"
+    ],
+    "unique": {
+      "eg": [
+        "method.com.eg"
+      ],
+      "sa": [
+        "dimofinf.sa",
+        "etharweb.com",
+        "teksa-sa.com"
+      ],
+      "ae": [
+        "7gmedia.com",
+        "canadahitech.com",
+        "pinterest.com",
+        "useouae.ae"
+      ]
+    }
+  },
+  {
+    "keyword": "شركة تسويق الكتروني",
+    "per_market": {
+      "eg": [
+        "firstmarkets.com",
+        "evyx.net",
+        "taswiqonline.com",
+        "google.com.eg",
+        "egessia.com",
+        "be-group.com",
+        "yellowpages.com.eg",
+        "nofalseo.com",
+        "rabeh.org"
+      ],
+      "sa": [
+        "eltzam.sa",
+        "serajj.sa",
+        "adselams.com",
+        "woow.sa",
+        "agencytak.com",
+        "kmtco.sa",
+        "rasmi.sa",
+        "samadrasat.com",
+        "unitedseo.sa"
+      ],
+      "ae": [
+        "digitalorks.com",
+        "useouae.ae",
+        "digitalmediasapiens.com",
+        "quickdigitals.ae",
+        "wgg-agency.com",
+        "instagram.com",
+        "aaaa.ae",
+        "eds.ae",
+        "ozs.ae"
+      ]
+    },
+    "overlap": {
+      "eg/sa": 0.0,
+      "eg/ae": 0.0,
+      "sa/ae": 0.0
+    },
+    "shared": [],
+    "unique": {
+      "eg": [
+        "be-group.com",
+        "egessia.com",
+        "evyx.net",
+        "firstmarkets.com",
+        "google.com.eg",
+        "nofalseo.com",
+        "rabeh.org",
+        "taswiqonline.com",
+        "yellowpages.com.eg"
+      ],
+      "sa": [
+        "adselams.com",
+        "agencytak.com",
+        "eltzam.sa",
+        "kmtco.sa",
+        "rasmi.sa",
+        "samadrasat.com",
+        "serajj.sa",
+        "unitedseo.sa",
+        "woow.sa"
+      ],
+      "ae": [
+        "aaaa.ae",
+        "digitalmediasapiens.com",
+        "digitalorks.com",
+        "eds.ae",
+        "instagram.com",
+        "ozs.ae",
+        "quickdigitals.ae",
+        "useouae.ae",
+        "wgg-agency.com"
+      ]
+    }
+  },
+  {
+    "keyword": "افضل بنك",
+    "per_market": {
+      "eg": [
+        "qnb.com.eg",
+        "theubeg.com",
+        "mashreq.com",
+        "firstbankeg.com",
+        "google.com.eg",
+        "reddit.com"
+      ],
+      "sa": [
+        "bankalbilad.com.sa",
+        "x.com",
+        "bonokey.com",
+        "d360.com",
+        "sab.com",
+        "alinma.com",
+        "facebook.com",
+        "own.sa"
+      ],
+      "ae": [
+        "emiratesnbd.com",
+        "dib.ae",
+        "bankfab.com",
+        "mashreqalislami.com",
+        "yallacompare.com",
+        "excelproperties.ae",
+        "emiratesislamic.ae",
+        "mashreq.com"
+      ]
+    },
+    "overlap": {
+      "eg/sa": 0.0,
+      "eg/ae": 0.08,
+      "sa/ae": 0.0
+    },
+    "shared": [],
+    "unique": {
+      "eg": [
+        "firstbankeg.com",
+        "google.com.eg",
+        "qnb.com.eg",
+        "reddit.com",
+        "theubeg.com"
+      ],
+      "sa": [
+        "alinma.com",
+        "bankalbilad.com.sa",
+        "bonokey.com",
+        "d360.com",
+        "facebook.com",
+        "own.sa",
+        "sab.com",
+        "x.com"
+      ],
+      "ae": [
+        "bankfab.com",
+        "dib.ae",
+        "emiratesislamic.ae",
+        "emiratesnbd.com",
+        "excelproperties.ae",
+        "mashreqalislami.com",
+        "yallacompare.com"
+      ]
+    }
+  },
+  {
+    "keyword": "تعلم البرمجة",
+    "per_market": {
+      "eg": [
+        "coddy.tech",
+        "netacad.com",
+        "facebook.com",
+        "academy.hsoub.com",
+        "almdrasa.com",
+        "play.google.com",
+        "codezilla.courses",
+        "elzero.org"
+      ],
+      "sa": [
+        "coddy.tech",
+        "netacad.com",
+        "training.alkhaleej.com.sa",
+        "academy.hsoub.com",
+        "almdrasa.com",
+        "codezilla.courses",
+        "facebook.com"
+      ],
+      "ae": [
+        "coddy.tech",
+        "academy.hsoub.com",
+        "netacad.com",
+        "codezilla.courses",
+        "almdrasa.com",
+        "learrnsimply.com",
+        "elzero.org",
+        "barmej.com"
+      ]
+    },
+    "overlap": {
+      "eg/sa": 0.67,
+      "eg/ae": 0.6,
+      "sa/ae": 0.5
+    },
+    "shared": [
+      "academy.hsoub.com",
+      "almdrasa.com",
+      "coddy.tech",
+      "codezilla.courses",
+      "netacad.com"
+    ],
+    "unique": {
+      "eg": [
+        "play.google.com"
+      ],
+      "sa": [
+        "training.alkhaleej.com.sa"
+      ],
+      "ae": [
+        "barmej.com",
+        "learrnsimply.com"
+      ]
+    }
+  }
+]

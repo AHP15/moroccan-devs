@@ -1,0 +1,389 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import MetricTile from '~/components/MetricTile.astro';
+import { readingTime } from '~/lib/posts';
+import { getCollection } from 'astro:content';
+import { PHASES, SEGMENTS, CHANNELS, MARKET, BASELINE } from '~/data/gtm';
+import { AUDIENCE } from '~/data/metrics';
+import { SITE, AUTHOR } from '~/consts';
+
+// Site facts are computed from the repo rather than typed in, so this page cannot
+// drift out of date the way a hand-maintained figure would.
+const all = await getCollection('posts');
+const arabicWords = all.reduce(
+  (sum, p) => sum + (p.body ?? '').replace(/```[\s\S]*?```/g, ' ').split(/\s+/).filter(Boolean).length,
+  0,
+);
+const tagCount = new Set(all.flatMap((p) => p.data.tags)).size;
+const minutes = all.reduce((sum, p) => sum + readingTime(p.body), 0);
+
+const fmt = (n: number) => new Intl.NumberFormat('en').format(n);
+---
+
+<BaseLayout
+  title={`Arabic market plan — ${SITE.name}`}
+  description="A 90-day go-to-market plan for SerpApi's Arabic-speaking developer market, with market sizing, target segments and measurement."
+  lang="en"
+  noindex
+>
+  <div class="mx-auto max-w-3xl px-5 pt-14 pb-4">
+    <!-- ---------- Header ---------- -->
+    <header class="border-b border-[var(--border)] pb-10">
+      <p class="m-0 mb-3 text-xs font-semibold tracking-[0.12em] text-[var(--accent)] uppercase">
+        Prepared for SerpApi · Developer Advocate (Arabic)
+      </p>
+      <h1 class="m-0 mb-4 text-3xl leading-tight font-bold sm:text-4xl">
+        A 90-day plan for the Arabic developer market
+      </h1>
+      <p class="m-0 max-w-2xl text-lg leading-relaxed text-[var(--fg-muted)]">
+        You are hiring advocates for eleven languages at once, which tells me this is a systematic
+        market-expansion programme rather than a content hire. So instead of describing what I would
+        do, I ran the first month's research and published it: SerpApi ranks
+        <strong>#1 in Egypt, Saudi and the UAE</strong> for <code>serp api</code>, and is absent
+        from the top 20 for every Arabic-language phrasing of the same need — where page one is
+        held by machine translation. This page is that data, the 90 days it implies, and how you
+        would check whether it worked.
+      </p>
+      <p class="m-0 mt-4 text-sm text-[var(--fg-subtle)]">
+        {AUTHOR.name} · <a href={`mailto:${AUTHOR.email}`} class="text-[var(--accent)] no-underline">{AUTHOR.email}</a>
+      </p>
+    </header>
+
+    <div class="prose text-base">
+      <!-- ---------- Opportunity ---------- -->
+      <h2>The gap, in four numbers</h2>
+      <p>
+        The Arabic market is not an emerging one that needs educating. It is a connected, funded
+        software market whose developers are underserved in their own language.
+      </p>
+    </div>
+
+    <div class="my-8 grid gap-3 sm:grid-cols-2">
+      {MARKET.map((fact) => (
+        <div class="rounded-xl border border-[var(--border)] bg-[var(--bg-raised)] p-5">
+          <p class="m-0 text-2xl font-bold text-[var(--accent)] tabular-nums">{fact.figure}</p>
+          <p class="m-0 mt-1 text-sm font-semibold text-[var(--fg)]">{fact.label}</p>
+          <p class="m-0 mt-2 text-[13px] leading-relaxed text-[var(--fg-muted)]">{fact.note}</p>
+          <a
+            href={fact.source.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-2 inline-block text-[13px] text-[var(--fg-subtle)] underline underline-offset-2 hover:text-[var(--accent)]"
+          >{fact.source.label}</a>
+        </div>
+      ))}
+    </div>
+
+    <div class="prose text-base">
+      <p>
+        Note the second figure honestly: sources disagree by a factor of five on how much of the web
+        is in Arabic. I would rather show you that disagreement than pick the number that makes the
+        strongest slide. The direction is not in dispute, and in technical content specifically the
+        gap is wider than any of these aggregate figures suggest.
+      </p>
+
+      <!-- ---------- Findings ---------- -->
+      <h2>What I already measured</h2>
+      <p>
+        Rather than describe what I would do, I ran the first month's research and published it.
+        Everything below was measured on {BASELINE.measuredOn} through SerpApi, cost
+        {BASELINE.searchesUsed} searches, and is reproducible from two open-source tools whose raw
+        output is committed alongside them. Check the numbers rather than take them.
+      </p>
+
+      <h3>Finding 1 — English demand is captured. Arabic demand is not.</h3>
+      <p>
+        I tracked <code>serpapi.com</code> across <code>google.com.eg</code>,
+        <code>google.com.sa</code> and <code>google.ae</code>, on the same concept expressed two
+        ways: in English technical terms, and in Arabic.
+      </p>
+      <div class="overflow-x-auto">
+        <table>
+          <thead>
+            <tr><th>Keyword</th><th>EG</th><th>SA</th><th>AE</th></tr>
+          </thead>
+          <tbody>
+            {BASELINE.ranks.map((r) => (
+              <tr>
+                <td dir={r.script === 'arabic' ? 'rtl' : 'ltr'} class="whitespace-nowrap">{r.keyword}</td>
+                {(['eg', 'sa', 'ae'] as const).map((code) => (
+                  <td class:list={['text-center font-mono', r[code] === null ? 'text-[var(--fg-subtle)]' : 'font-bold text-[var(--accent)]']}>
+                    {r[code] ?? '—'}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="text-[13px] text-[var(--fg-subtle)]">— means absent from the top 20.</p>
+      <p>
+        SerpApi holds <strong>position 1 in all three markets</strong> for <code>serp api</code>,
+        and top-3 for <code>google search api</code>. That is a strong result and it is worth
+        saying so. But on every Arabic-language phrasing of the same need, it does not appear at
+        all. Those are two different markets, and only one of them is being served.
+      </p>
+
+      <h3>Finding 2 — page one is occupied by Google Translate</h3>
+      <p>
+        Absence proves little on its own, so I looked at what <em>does</em> rank. On
+        <code dir="rtl">واجهة برمجة نتائج البحث</code> from <code>google.com.sa</code>,
+        <strong><code>translate.google.com</code> holds six of the eight page-one slots.</strong>
+        On the next query, three of eight.
+      </p>
+      <p>
+        Google is serving machine-translated English pages because there is no native Arabic
+        content worth ranking. One of those translated results is a "which SERP API should you
+        choose" comparison article — commercial-intent content, ranking on page one of Arabic
+        search, via automatic translation.
+      </p>
+      <p>
+        This is the finding I would build the whole strategy on. The Arabic first page for this
+        category is not a crowded market to break into. <strong>It is vacant, and the incumbent is
+        a translation engine.</strong>
+      </p>
+
+      <h3>Finding 3 — Arabic search fragments, but only for local intent</h3>
+      <p>
+        I expected Arabic results to differ sharply between countries. Measuring it properly —
+        Jaccard overlap of the top-10 domain sets per market — shows the truth is conditional, and
+        more useful than the blanket claim would have been.
+      </p>
+      <div class="overflow-x-auto">
+        <table>
+          <thead>
+            <tr><th>Query</th><th>Intent type</th><th>Overlap</th><th>Shared by all 3</th></tr>
+          </thead>
+          <tbody>
+            {BASELINE.overlap.map((o) => (
+              <tr>
+                <td dir="rtl" class="whitespace-nowrap">{o.keyword}</td>
+                <td class="text-[var(--fg-muted)] whitespace-nowrap">{o.intent}</td>
+                <td class="text-center font-mono font-bold">{o.mean.toFixed(2)}</td>
+                <td class="text-center font-mono text-[var(--fg-muted)]">{o.shared}/10</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Overlap tracks how local the intent is, on a clean gradient. Educational queries are
+        effectively one pan-Arab market. Local commercial services share <strong>literally zero
+        domains</strong> across Egypt, Saudi and the UAE — ten Egyptian agencies, ten Saudi, ten
+        Emirati, no name repeating. Add <code>serp api</code> ranking identically in all three and
+        the range runs from total convergence to total separation, explained by one variable.
+      </p>
+      <p>
+        The mean across all five is 0.23, and I would not quote that number: it hides the entire
+        structure. The commercial consequence is concrete —
+        <strong>for commercial-intent Arabic keywords, one rank number is measuring nothing</strong>,
+        and the correct unit is a matrix. That is unserved demand that SerpApi's API already
+        satisfies, and it multiplies queries per account: five markets, five times the searches for
+        the same keyword list.
+      </p>
+      <p class="text-[15px] text-[var(--fg-subtle)]">
+        Honest limits: five keywords, three markets, one point in time, chosen to test a
+        hypothesis. Search results move. This is a baseline worth extending, not a study.
+      </p>
+
+      <!-- ---------- Plan ---------- -->
+      <h2>The 90 days</h2>
+    </div>
+
+    <ol class="m-0 my-8 list-none space-y-4 p-0">
+      {PHASES.map((phase) => (
+        <li class="rounded-xl border border-[var(--border)] bg-[var(--bg-raised)] p-6">
+          <div class="mb-3 flex flex-wrap items-baseline gap-x-3">
+            <span class="rounded-md bg-[var(--accent-soft)] px-2 py-0.5 font-mono text-[13px] font-semibold text-[var(--accent)]">
+              {phase.window}
+            </span>
+            <h3 class="m-0 text-lg font-bold">{phase.title}</h3>
+          </div>
+          <p class="m-0 mb-4 text-[15px] leading-relaxed text-[var(--fg-muted)]">{phase.goal}</p>
+          <ul class="m-0 mb-4 list-none space-y-2 p-0">
+            {phase.deliverables.map((d) => (
+              <li class="flex gap-2.5 text-[15px] leading-relaxed">
+                {d.done ? (
+                  <svg class="mt-[5px] size-4 shrink-0 text-[var(--accent)]" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">
+                    <path d="m4 10.5 4 4 8-9" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                ) : (
+                  <span class="mt-[9px] size-1.5 shrink-0 rounded-full bg-[var(--border-strong)]" aria-hidden="true"></span>
+                )}
+                <span>
+                  {d.text}
+                  {d.done && <span class="ms-2 align-middle text-[12px] font-semibold tracking-wide text-[var(--accent)] uppercase">Done</span>}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <p class="m-0 border-t border-[var(--border)] pt-3 text-[13px] text-[var(--fg-subtle)]">
+            <span class="font-semibold text-[var(--fg-muted)]">Proof it worked:</span> {phase.proof}
+          </p>
+        </li>
+      ))}
+    </ol>
+
+    <!-- ---------- Segments ---------- -->
+    <div class="prose text-base">
+      <h2>Who buys SERP data in this region</h2>
+      <p>
+        These are hypotheses, not conclusions. Which segment actually converts is an empirical
+        question, and part of what the first 30 days is for.
+      </p>
+    </div>
+
+    <div class="my-8 space-y-3">
+      {SEGMENTS.map((segment, i) => (
+        <div class="rounded-xl border border-[var(--border)] p-5">
+          <div class="flex items-baseline gap-3">
+            <span class="font-mono text-[13px] text-[var(--fg-subtle)] tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="m-0 text-base font-bold">{segment.name}</h3>
+          </div>
+          <p class="m-0 mt-2 ps-8 text-[15px] leading-relaxed text-[var(--fg-muted)]">{segment.why}</p>
+          <ul class="m-0 mt-3 ps-8 flex list-none flex-wrap gap-2 p-0">
+            {segment.examples.map((e) => (
+              <li class="rounded-md border border-[var(--border)] bg-[var(--bg-sunken)] px-2 py-0.5 text-[13px] text-[var(--fg-muted)]">{e}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <!-- ---------- Channels ---------- -->
+    <div class="prose text-base">
+      <h2>Channels, and what each is for</h2>
+      <p>
+        The job description asks for blogs, videos, social, community and outbound. A blog alone
+        covers one of five, so here is how I would weight the rest.
+      </p>
+      <div class="overflow-x-auto">
+        <table>
+          <thead>
+            <tr><th>Channel</th><th>Role</th><th>Cadence</th></tr>
+          </thead>
+          <tbody>
+            {CHANNELS.map((c) => (
+              <tr>
+                <td class="font-semibold whitespace-nowrap">{c.name}</td>
+                <td>{c.role}</td>
+                <td class="whitespace-nowrap text-[var(--fg-muted)]">{c.cadence}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ---------- Measurement ---------- -->
+      <h2>How you would know it is working</h2>
+      <p>
+        Developer advocacy earns a reputation for being unmeasurable, usually because the metrics get
+        chosen after the fact. These are the ones I would commit to up front.
+      </p>
+    </div>
+
+    <div class="my-8 grid gap-3 sm:grid-cols-3">
+      <MetricTile
+        value={AUDIENCE.readers30d !== null ? fmt(AUDIENCE.readers30d) : null}
+        label="Readers / 30 days"
+        note="Leading indicator. Slow to move, then compounds."
+      />
+      <MetricTile
+        value={AUDIENCE.subscribers !== null ? fmt(AUDIENCE.subscribers) : null}
+        label="Newsletter subscribers"
+        note="Intent, not traffic. The number that predicts signups."
+      />
+      <MetricTile
+        value={AUDIENCE.topOrganicQuery}
+        label="Top organic Arabic query"
+        note="Whether the keyword strategy actually ranks."
+      />
+    </div>
+
+    <div class="prose text-base">
+      <p class="text-[15px] text-[var(--fg-subtle)]">
+        {AUDIENCE.asOf
+          ? `Audience figures as of ${AUDIENCE.asOf}.`
+          : 'Audience figures are blank because this site is new and I would rather show you an empty field than a number I cannot stand behind. They populate from analytics as the content ages.'}
+      </p>
+      <p>
+        Beyond those three, the metrics that would actually decide whether the hire paid off:
+        <strong>signups attributable to Arabic-language channels</strong>, queries per account from
+        the region, and — the one most advocates skip — how many product changes came out of regional
+        user feedback. That last one is the difference between a content channel and an advocate.
+      </p>
+
+      <!-- ---------- Evidence ---------- -->
+      <h2>What already exists</h2>
+      <p>
+        This site is the working prototype of the content system described above, not a mockup of one.
+        The figures below are computed from the repository at build time.
+      </p>
+    </div>
+
+    <div class="my-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <MetricTile value={fmt(all.length)} label="Arabic posts written" />
+      <MetricTile value={fmt(arabicWords)} label="Words of Arabic technical prose" />
+      <MetricTile value={fmt(minutes)} label="Minutes of reading" />
+      <MetricTile value={fmt(tagCount)} label="Topics covered" />
+    </div>
+
+    <div class="prose text-base">
+      <p>Specific things it demonstrates, each of which was a decision rather than a default:</p>
+      <ul>
+        <li>
+          <strong>Two open-source measurement tools</strong>, with their raw output committed —
+          a per-market rank tracker and a SERP-overlap comparator. Every figure on this page is
+          reproducible from them.
+        </li>
+        <li>
+          <strong>Correct handling of a live API change.</strong> Google discontinued the
+          <code>num</code> parameter in 2025, so tooling that still requests 100 results silently
+          sees ten and reports false negatives. Both tools paginate with <code>start</code> and
+          compute absolute rank from the page offset.
+        </li>
+        <li>
+          <strong>Arabic typography and bidi handled properly.</strong> Code blocks and Latin
+          technical terms are directionally isolated, so a URL or an identifier inside Arabic prose
+          does not get reordered. Most Arabic technical sites get this wrong.
+        </li>
+        <li>
+          <strong>Multi-language code samples</strong> in Python, JavaScript and cURL, matching how
+          SerpApi's own docs present snippets.
+        </li>
+        <li>
+          <strong>Open Graph images that render Arabic correctly</strong> — which required rejecting
+          the standard tool for the job, because it cannot shape Arabic script.
+        </li>
+        <li>
+          <strong>An English abstract on every post</strong>, enforced by the content schema. Your
+          team cannot read Arabic, and content you cannot evaluate is content you cannot manage.
+        </li>
+      </ul>
+      <p>
+        The last point is the one I would emphasise. Managing an Arabic content programme from Austin
+        requires the output to be legible to people who do not read the language. That is a
+        solvable problem, and it should be solved on day one rather than becoming a trust gap later.
+      </p>
+
+      <h2>What I would want to know from you</h2>
+      <ul>
+        <li>Which regional Google domains already show meaningful query volume in your logs — that would sharpen the market prioritisation immediately.</li>
+        <li>Whether Arabic localisation is expected to cover the docs and dashboard, or marketing pages only.</li>
+        <li>How the other language advocates coordinate, and what is shared versus owned per market.</li>
+      </ul>
+    </div>
+
+    <div class="my-12 rounded-2xl border border-[var(--border)] bg-[var(--bg-sunken)] p-6 sm:p-8">
+      <p class="m-0 text-[15px] leading-relaxed text-[var(--fg-muted)]">
+        The Arabic posts referenced above are at
+        <a href="/" class="font-semibold text-[var(--accent)] no-underline">{SITE.url.replace('https://', '')}</a>,
+        with English summaries on every post and a full English index at
+        <a href="/en" class="font-semibold text-[var(--accent)] no-underline">/en</a>.
+      </p>
+      <p class="m-0 mt-4 text-[15px]">
+        <a href={`mailto:${AUTHOR.email}`} class="font-semibold text-[var(--accent)] no-underline">{AUTHOR.email}</a>
+      </p>
+    </div>
+  </div>
+</BaseLayout>

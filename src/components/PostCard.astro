@@ -1,0 +1,46 @@
+---
+import { UI_AR } from '~/consts';
+import FormattedDate from './FormattedDate.astro';
+import { tagSlug } from '~/lib/posts';
+
+interface Props {
+  post: {
+    id: string;
+    data: { title: string; description: string; pubDate: Date; tags: string[]; series?: string };
+  };
+  readingTime?: number;
+}
+const { post, readingTime } = Astro.props;
+---
+
+<article class="group border-b border-[var(--border)] py-7 last:border-0">
+  <div class="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] text-[var(--fg-subtle)]">
+    <FormattedDate date={post.data.pubDate} />
+    {readingTime && (<><span aria-hidden="true">·</span><span>{UI_AR.readingTime(readingTime)}</span></>)}
+    {post.data.series && (
+      <><span aria-hidden="true">·</span><span class="text-[var(--warm)]">سلسلة: {post.data.series}</span></>
+    )}
+  </div>
+
+  <h2 class="m-0 mb-2 text-xl leading-snug font-bold sm:text-2xl">
+    <a
+      href={`/posts/${post.id}`}
+      class="text-[var(--fg)] no-underline transition-colors group-hover:text-[var(--accent)]"
+    >{post.data.title}</a>
+  </h2>
+
+  <p class="m-0 mb-3 leading-relaxed text-[var(--fg-muted)]">{post.data.description}</p>
+
+  {post.data.tags.length > 0 && (
+    <ul class="m-0 flex list-none flex-wrap gap-2 p-0">
+      {post.data.tags.map((tag) => (
+        <li>
+          <a
+            href={`/tags/${tagSlug(tag)}`}
+            class="inline-block rounded-md border border-[var(--border)] px-2 py-0.5 text-[13px] text-[var(--fg-muted)] no-underline transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
+          >{tag}</a>
+        </li>
+      ))}
+    </ul>
+  )}
+</article>

@@ -1,0 +1,9 @@
+dist/
+node_modules/
+.astro/
+.env
+.env.production
+.DS_Store
+src/assets/fonts/*.ttf
+__pycache__/
+*.pyc

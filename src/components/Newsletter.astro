@@ -1,0 +1,36 @@
+---
+import { AUTHOR } from '~/consts';
+const buttondown = import.meta.env.PUBLIC_BUTTONDOWN_USER;
+const action = buttondown
+  ? `https://buttondown.com/api/emails/embed-subscribe/${buttondown}`
+  : `mailto:${AUTHOR.email}`;
+---
+
+<section class="my-14 rounded-2xl border border-[var(--border)] bg-[var(--bg-raised)] p-6 sm:p-8">
+  <h2 class="m-0 mb-2 text-xl font-bold">النشرة البريدية</h2>
+  <p class="m-0 mb-5 text-[15px] leading-relaxed text-[var(--fg-muted)]">
+    مقال تقني جديد بالعربية كل أسبوع، حول واجهات برمجة التطبيقات واستخراج بيانات البحث. بدون رسائل مزعجة، وبإمكانك إلغاء الاشتراك في أي وقت.
+  </p>
+  <form
+    action={action}
+    method="post"
+    target="_blank"
+    class="flex flex-col gap-2.5 sm:flex-row"
+    data-umami-event="newsletter-subscribe"
+  >
+    <label class="sr-only" for="bd-email">بريدك الإلكتروني</label>
+    <input
+      id="bd-email"
+      type="email"
+      name="email"
+      required
+      dir="ltr"
+      placeholder="you@example.com"
+      class="min-w-0 flex-1 rounded-lg border border-[var(--border-strong)] bg-[var(--bg)] px-3.5 py-2.5 text-[15px] text-[var(--fg)] placeholder:text-[var(--fg-subtle)]"
+    />
+    <button
+      type="submit"
+      class="rounded-lg bg-[var(--accent)] px-5 py-2.5 text-[15px] font-semibold text-white transition-colors hover:bg-[var(--accent-hover)]"
+    >اشترك</button>
+  </form>
+</section>

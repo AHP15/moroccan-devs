@@ -1,0 +1,9 @@
+---
+/**
+ * An English technical term inside Arabic prose, with the Arabic gloss as a tooltip.
+ * Wrapped in <bdi> so the surrounding RTL paragraph cannot reorder it.
+ */
+interface Props { ar?: string }
+const { ar } = Astro.props;
+---
+<bdi dir="ltr" title={ar} class="font-medium text-[var(--fg)]"><slot /></bdi>

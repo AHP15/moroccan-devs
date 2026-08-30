@@ -1,0 +1,30 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getAllTags } from '~/lib/posts';
+import { SITE } from '~/consts';
+
+const tags = await getAllTags();
+---
+
+<BaseLayout title={`المواضيع — ${SITE.name}`} description="كل المواضيع التقنية المتناولة في المدوّنة.">
+  <section class="mx-auto max-w-3xl px-5 pt-14">
+    <h1 class="m-0 mb-6 text-3xl font-bold">المواضيع</h1>
+    {tags.length === 0 ? (
+      <p class="text-[var(--fg-muted)]">لا توجد مواضيع بعد.</p>
+    ) : (
+      <ul class="m-0 flex list-none flex-wrap gap-2.5 p-0">
+        {tags.map(({ tag, slug, count }) => (
+          <li>
+            <a
+              href={`/tags/${slug}`}
+              class="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] px-3.5 py-2 no-underline transition-colors hover:border-[var(--accent)]"
+            >
+              <span class="text-[var(--fg)]">{tag}</span>
+              <span class="text-[13px] text-[var(--fg-subtle)]">{count}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+</BaseLayout>

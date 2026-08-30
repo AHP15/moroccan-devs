@@ -1,0 +1,7 @@
+# Arabic-language queries for SERP API intent
+واجهة برمجة نتائج البحث
+استخراج نتائج بحث جوجل
+سحب بيانات محركات البحث
+# English technical terms, as Arabic-market developers actually type them
+serp api
+google search api

@@ -1,0 +1,204 @@
+@import 'tailwindcss';
+
+@import '@fontsource/ibm-plex-sans-arabic/arabic-400.css';
+@import '@fontsource/ibm-plex-sans-arabic/arabic-500.css';
+@import '@fontsource/ibm-plex-sans-arabic/arabic-600.css';
+@import '@fontsource/ibm-plex-sans-arabic/arabic-700.css';
+@import '@fontsource/ibm-plex-sans-arabic/latin-400.css';
+@import '@fontsource/ibm-plex-sans-arabic/latin-600.css';
+@import '@fontsource/ibm-plex-sans-arabic/latin-700.css';
+@import '@fontsource/ibm-plex-mono/latin-400.css';
+@import '@fontsource/ibm-plex-mono/latin-500.css';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+@theme {
+  --font-sans: 'IBM Plex Sans Arabic', ui-sans-serif, system-ui, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Code', monospace;
+
+  /* Majorelle blue is the one colour that reads as Moroccan without turning into pastiche. */
+  --color-majorelle-400: #8b93ff;
+  --color-majorelle-500: #6169ee;
+  --color-majorelle-600: #4b4fd6;
+  --color-majorelle-700: #3c3cae;
+  --color-terracotta-400: #e08a63;
+  --color-terracotta-500: #c6613f;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9063rem;
+  --text-base: 1.0625rem;   /* Arabic needs a touch more size than Latin at the same rem */
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.6875rem;
+  --text-3xl: 2.125rem;
+  --text-4xl: 2.625rem;
+}
+
+:root {
+  color-scheme: light;
+  --bg: #fbfaf8;
+  --bg-raised: #ffffff;
+  --bg-sunken: #f2f0ec;
+  --fg: #16151a;
+  --fg-muted: #5d5a66;
+  --fg-subtle: #86828f;
+  --border: #e4e1db;
+  --border-strong: #cfcbc3;
+  --accent: var(--color-majorelle-600);
+  --accent-hover: var(--color-majorelle-700);
+  --accent-soft: #ecebff;
+  --warm: var(--color-terracotta-500);
+  --code-bg: #f7f6f3;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #0e0d12;
+  --bg-raised: #17161d;
+  --bg-sunken: #08070b;
+  --fg: #eeecf2;
+  --fg-muted: #a5a1b0;
+  --fg-subtle: #78748a;
+  --border: #26242f;
+  --border-strong: #3a3747;
+  --accent: var(--color-majorelle-400);
+  --accent-hover: #a8aeff;
+  --accent-soft: #1e1c33;
+  --warm: var(--color-terracotta-400);
+  --code-bg: #14131a;
+}
+
+@layer base {
+  html {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+  body { margin: 0; background: var(--bg); }
+
+  /* Arabic script sits lower and needs more leading than Latin at the same size. */
+  :where(p, li) { line-height: 1.95; }
+  :where(h1, h2, h3, h4) { line-height: 1.45; font-weight: 700; letter-spacing: 0; }
+
+  ::selection { background: var(--accent-soft); color: var(--fg); }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+
+  hr { border: 0; border-top: 1px solid var(--border); }
+
+  /* Latin runs and code are directional islands inside RTL prose — see rehype-bidi-isolate. */
+  bdi { unicode-bidi: isolate; }
+  code, pre, kbd, samp {
+    direction: ltr;
+    unicode-bidi: isolate;
+    text-align: start;
+    font-family: var(--font-mono);
+    font-feature-settings: 'liga' 0;
+  }
+}
+
+/* ---------- Article prose ---------- */
+.prose {
+  font-size: var(--text-lg);
+  color: var(--fg);
+}
+.prose > * + * { margin-block-start: 1.5em; }
+.prose h2 {
+  font-size: var(--text-2xl);
+  margin-block-start: 2.5em;
+  margin-block-end: -0.35em;
+  scroll-margin-top: 5rem;
+}
+.prose h3 {
+  font-size: var(--text-xl);
+  margin-block-start: 2em;
+  margin-block-end: -0.4em;
+  scroll-margin-top: 5rem;
+}
+.prose a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in oklab, var(--accent) 40%, transparent);
+}
+.prose a:hover { text-decoration-color: var(--accent); }
+.prose strong { font-weight: 600; color: var(--fg); }
+
+.prose ul, .prose ol { padding-inline-start: 1.5em; }
+.prose li::marker { color: var(--fg-subtle); }
+.prose li + li { margin-block-start: 0.5em; }
+
+.prose blockquote {
+  margin-inline: 0;
+  padding-inline-start: 1.15em;
+  border-inline-start: 3px solid var(--accent);
+  color: var(--fg-muted);
+}
+
+.prose :not(pre) > code {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 0.12em 0.4em;
+  font-size: 0.86em;
+  white-space: nowrap;
+}
+
+.prose pre {
+  background: var(--code-bg) !important;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.1rem 1.15rem;
+  overflow-x: auto;
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  tab-size: 2;
+}
+.prose pre code { background: none; border: 0; padding: 0; white-space: pre; }
+
+/* Shiki dual-theme swap */
+html[data-theme='dark'] .astro-code,
+html[data-theme='dark'] .astro-code span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  display: block;
+  overflow-x: auto;
+}
+.prose th, .prose td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: start;
+}
+.prose th { background: var(--bg-sunken); font-weight: 600; }
+
+.prose img { border-radius: 10px; border: 1px solid var(--border); }
+
+/* Heading anchors, mirrored for RTL via logical properties */
+.heading-anchor {
+  opacity: 0;
+  margin-inline-start: 0.4em;
+  color: var(--fg-subtle);
+  text-decoration: none;
+  font-size: 0.7em;
+}
+:is(h2, h3):hover .heading-anchor, .heading-anchor:focus-visible { opacity: 1; }

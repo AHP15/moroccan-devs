@@ -1,0 +1,70 @@
+{
+  "domain": "serpapi.com",
+  "markets": [
+    {
+      "code": "eg",
+      "name_ar": "مصر",
+      "name_en": "Egypt",
+      "google_domain": "google.com.eg"
+    },
+    {
+      "code": "sa",
+      "name_ar": "السعودية",
+      "name_en": "Saudi Arabia",
+      "google_domain": "google.com.sa"
+    },
+    {
+      "code": "ae",
+      "name_ar": "الإمارات",
+      "name_en": "UAE",
+      "google_domain": "google.ae"
+    }
+  ],
+  "results": [
+    {
+      "keyword": "واجهة برمجة نتائج البحث",
+      "ranks": {
+        "eg": null,
+        "sa": null,
+        "ae": null
+      },
+      "dispersion": null
+    },
+    {
+      "keyword": "استخراج نتائج بحث جوجل",
+      "ranks": {
+        "eg": null,
+        "sa": null,
+        "ae": null
+      },
+      "dispersion": null
+    },
+    {
+      "keyword": "سحب بيانات محركات البحث",
+      "ranks": {
+        "eg": null,
+        "sa": null,
+        "ae": null
+      },
+      "dispersion": null
+    },
+    {
+      "keyword": "serp api",
+      "ranks": {
+        "eg": 1,
+        "sa": 1,
+        "ae": 1
+      },
+      "dispersion": 0
+    },
+    {
+      "keyword": "google search api",
+      "ranks": {
+        "eg": 2,
+        "sa": 3,
+        "ae": 3
+      },
+      "dispersion": 1
+    }
+  ]
+}

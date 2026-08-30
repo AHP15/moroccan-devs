@@ -1,0 +1,39 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getPublishedPosts } from '~/lib/posts';
+import { SITE, AUTHOR } from '~/consts';
+
+const posts = await getPublishedPosts();
+---
+
+<BaseLayout title={`${SITE.name} — ${SITE.taglineEn}`} description={SITE.descriptionEn} lang="en">
+  <section class="mx-auto max-w-3xl px-5 pt-14">
+    <h1 class="m-0 mb-4 text-3xl font-bold">{SITE.name}</h1>
+    <p class="m-0 mb-8 text-lg leading-relaxed text-[var(--fg-muted)]">{SITE.descriptionEn}</p>
+
+    <div class="prose text-base">
+      <p>
+        This site publishes technical tutorials in Arabic for developers across the Arab world.
+        Explanations are in Modern Standard Arabic; technical terms, identifiers and code stay in
+        English, because that is what developers actually search for.
+      </p>
+      <p>{AUTHOR.bioEn}</p>
+      <h2>Editorial focus</h2>
+      <ul>
+        <li>APIs and structured web data, with runnable code in Python, JavaScript and cURL.</li>
+        <li>Search engine result data — and specifically how Arabic queries behave across regional Google domains, which almost nobody writes about.</li>
+        <li>An Arabic ↔ English glossary of technical terms, so translations stay consistent across posts.</li>
+      </ul>
+      <h2>Posts</h2>
+      <ul>
+        {posts.map((post) => (
+          <li>
+            <a href={`/posts/${post.id}`}>{post.data.titleEn}</a>
+            <span class="text-[var(--fg-subtle)]"> — {post.data.abstractEn}</span>
+          </li>
+        ))}
+      </ul>
+      <p>Contact: <a href={`mailto:${AUTHOR.email}`}>{AUTHOR.email}</a></p>
+    </div>
+  </section>
+</BaseLayout>

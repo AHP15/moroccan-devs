@@ -1,0 +1,14 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { SITE, UI_AR } from '~/consts';
+---
+<BaseLayout title={`${UI_AR.notFound} — ${SITE.name}`} description={UI_AR.notFound} noindex>
+  <section class="mx-auto max-w-3xl px-5 py-24 text-center">
+    <p class="m-0 font-mono text-5xl font-bold text-[var(--accent)]" dir="ltr">404</p>
+    <h1 class="mt-4 mb-3 text-2xl font-bold">{UI_AR.notFound}</h1>
+    <p class="m-0 mb-6 text-[var(--fg-muted)]">الرابط الذي طلبته غير موجود، أو ربّما تغيّر.</p>
+    <a href="/" class="inline-block rounded-lg bg-[var(--accent)] px-5 py-2.5 font-semibold text-white no-underline">
+      العودة إلى الرئيسية
+    </a>
+  </section>
+</BaseLayout>
