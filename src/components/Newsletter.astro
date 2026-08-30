@@ -18,6 +18,10 @@ const action = buttondown
     class="flex flex-col gap-2.5 sm:flex-row"
     data-umami-event="newsletter-subscribe"
   >
+    {/* Buttondown requires this hidden field on embedded forms. Submitting as a plain
+        form POST (not fetch) is also required, so the subscriber can follow Buttondown's
+        response through CAPTCHA or a validation error. */}
+    {buttondown && <input type="hidden" name="embed" value="1" />}
     <label class="sr-only" for="bd-email">بريدك الإلكتروني</label>
     <input
       id="bd-email"

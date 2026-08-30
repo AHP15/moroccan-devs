@@ -99,11 +99,17 @@ Site name, tagline, author details and navigation live in `src/consts.ts`.
 
 ## Deploying
 
-Static output — any host works. For Cloudflare Pages:
+Static output — any host works. Deployed on Vercel:
 
 - Build command: `npm run build`
 - Output directory: `dist`
 - Node version: 20 or newer
+
+`npm run build` downloads the OG fonts first, so no extra build step is needed.
+
+Set `PUBLIC_UMAMI_ID`, `PUBLIC_UMAMI_SRC` and `PUBLIC_BUTTONDOWN_USER` as environment
+variables in the Vercel project settings — never in a committed file. Each one degrades
+gracefully when absent, so the site builds fine without them.
 
 Set the real domain in `SITE.url` (`src/consts.ts`) before deploying; canonical URLs,
 sitemap, RSS and OG image URLs are all derived from it.
