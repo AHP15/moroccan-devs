@@ -7,3 +7,6 @@ node_modules/
 src/assets/fonts/*.ttf
 __pycache__/
 *.pyc
+
+# Personal application material — deliberately not published
+application/
