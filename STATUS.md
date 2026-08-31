@@ -1,16 +1,17 @@
 # MoroccanDevs — readiness report
 
-**Compiled 31 August 2026** from the repo at `dfd141e`, a clean build, and a live check of
-production. Measurement data in `tools/rank-tracker/data/`.
+**Compiled 31 August 2026**, updated after both blockers were cleared. Built from the repo,
+a clean build, and a verified live check of production. Data in `tools/rank-tracker/data/`.
 
 ---
 
-## Verdict: two blockers from applying
+## Verdict: clear to apply
 
-The hard part is done. Four Arabic posts backed by original measured data, two open-source
-tools, and a written market plan — more than most Developer Advocate applicants bring to a
-first interview. What remains is not building. It is **pushing two commits and rotating a
-key**, then sending the email.
+Both blockers are closed. Everything is pushed, deployed and verified in production. Four
+Arabic posts backed by original measured data, two open-source tools, and a written market
+plan — more than most Developer Advocate applicants bring to a first interview.
+
+Nothing technical is now in the way of sending the application.
 
 | | |
 |---|---|
@@ -23,24 +24,22 @@ key**, then sending the email.
 
 ---
 
-## Blockers
+## Blockers — both closed
 
-### 1. Two commits are unpushed — CONFIRMED BROKEN IN PRODUCTION
+### 1. Unpushed commits — RESOLVED
 
-`3cd020a` and `dfd141e` are local only. One adds the hidden `embed=1` field Buttondown
-requires. I checked the live page: the field is **absent**, so the newsletter form on
-moroccandevs.com is currently submitting without it. The other commit adds the two
-newsletter emails.
+`3cd020a` and `dfd141e` were local only, and one carried the hidden `embed=1` field
+Buttondown requires, so the live newsletter form was submitting without it. Pushed and
+deployed; the field is confirmed present in production.
 
-```bash
-git push origin main   # then redeploy
-```
+### 2. Exposed SerpApi key — RESOLVED
 
-### 2. The SerpApi key is still live
+The key was pasted into a chat transcript and has been rotated. It never reached the repo:
+every staged file was scanned for the full key and for any 32-character hex string, and no
+commit in history contains it.
 
-It was pasted into a chat transcript. It is **not** in the repo — every staged file was
-scanned for the full key and for any 32-character hex string, and the tree is clean — but a
-pasted key should be treated as burned. Rotate it. Nothing deployed depends on it.
+> Local tools now need the new key — any `export SERPAPI_KEY` still open in a shell holds
+> the dead one.
 
 ---
 
@@ -59,9 +58,9 @@ All green except the item above.
 | `/sitemap-index.xml` | 200 | |
 
 - **Analytics is live and collecting.** The Umami tag is present with website ID
-  `dc6cda41-…`. This resolves the earlier "unverified" item.
-- **Newsletter is wired** to `buttondown.com/api/emails/embed-subscribe/moroccandevs` —
-  but missing `embed=1` until you push.
+  `dc6cda41-…`.
+- **Newsletter is fully wired** to `buttondown.com/api/emails/embed-subscribe/moroccandevs`,
+  with the required `embed=1` field confirmed present after deploy.
 - All four posts are listed on the homepage.
 
 ---
@@ -144,10 +143,11 @@ None change whether you get an interview. Build them if the blog keeps going.
 
 ## The order I would do it in
 
-1. **Push and redeploy** — `git push origin main`. Fixes the live newsletter form.
-2. **Rotate the SerpApi key** — two minutes in their dashboard.
-3. **Spot-check in a browser** — newsletter accepts a test address, RTL looks right on a phone.
-4. **Record two screencasts** — posts 2 and 3. Rough is fine.
+1. ~~Push and redeploy~~ — done, verified in production.
+2. ~~Rotate the SerpApi key~~ — done.
+3. **Spot-check in a browser** — submit a test address to the newsletter, and confirm RTL
+   looks right on a phone. The only check a script cannot do for you.
+4. **Record two screencasts** — see `video/outlines.md`. Rough is fine.
 5. **Spend a week in the communities** — answering, not promoting. Run in parallel.
 6. **Send the application** — resume to `careers@serpapi.com`, subject naming the role.
    Lead with the finding, not the blog.
