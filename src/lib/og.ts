@@ -21,6 +21,19 @@ const HEIGHT = 630;
 const MARGIN = 72;
 const TEXT_WIDTH = WIDTH - MARGIN * 2;
 
+/**
+ * The site mark: the zellij octagram from public/favicon.svg, on its own 32×32 grid.
+ * Kept in sync by hand — it is sixteen fixed vertices and does not change.
+ */
+const STAR =
+  'M30.2 16 26.041 20.159 26.041 26.041 20.159 26.041 16 30.2 11.841 26.041 5.959 26.041 5.959 20.159 1.8 16 5.959 11.841 5.959 5.959 11.841 5.959 16 1.8 20.159 5.959 26.041 5.959 26.041 11.841Z';
+
+/** Places the mark centred on (cx, cy) at the given diameter. */
+const star = (cx: number, cy: number, diameter: number, attrs: string) => {
+  const scale = diameter / 32;
+  return `<g transform="translate(${cx} ${cy}) scale(${scale}) translate(-16 -16)"><path d="${STAR}" ${attrs} stroke-width="2" stroke-linejoin="round"/></g>`;
+};
+
 const escapeXml = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' })[c]!);
 
@@ -96,7 +109,7 @@ export function renderOgImage({ title, kicker }: { title: string; kicker?: strin
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}">
   <rect width="${WIDTH}" height="${HEIGHT}" fill="#0e0d12"/>
   <rect x="0" y="0" width="${WIDTH}" height="8" fill="#4b4fd6"/>
-  <circle cx="150" cy="530" r="300" fill="#4b4fd6" opacity="0.07"/>
+  ${star(200, 438, 380, 'fill="#4b4fd6" stroke="#4b4fd6" opacity="0.11"')}
   ${kickerSvg}
   ${titleSvg}
   <text x="${right}" y="${HEIGHT - MARGIN}" font-family="IBM Plex Mono" font-size="26" font-weight="400" fill="#a5a1b0" direction="ltr" text-anchor="end">${escapeXml(SITE.name)}</text>
