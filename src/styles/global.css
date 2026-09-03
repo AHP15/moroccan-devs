@@ -35,6 +35,10 @@
 }
 
 :root {
+  /* The header wraps to two rows on phones, so anchor offsets cannot be a constant.
+     Everything that has to clear the sticky header reads this. */
+  --header-h: 6rem;
+
   color-scheme: light;
   --bg: #fbfaf8;
   --bg-raised: #ffffff;
@@ -68,13 +72,19 @@
   --code-bg: #14131a;
 }
 
+@media (width >= 40rem) {
+  :root { --header-h: 4rem; }
+}
+
 @layer base {
   html {
     background: var(--bg);
     color: var(--fg);
     font-family: var(--font-sans);
     scroll-behavior: smooth;
-    scroll-padding-top: 5rem;
+    /* The only anchor offset on the page. Pairing this with scroll-margin-top on the
+       headings would add the two together and drop every anchor twice as far down. */
+    scroll-padding-top: calc(var(--header-h) + 0.75rem);
     -webkit-text-size-adjust: 100%;
   }
   @media (prefers-reduced-motion: reduce) {
@@ -110,21 +120,25 @@
 
 /* ---------- Article prose ---------- */
 .prose {
-  font-size: var(--text-lg);
+  font-size: var(--text-base);
   color: var(--fg);
+  /* A bare URL or a long identifier in Arabic prose would otherwise set the page's
+     minimum width and give every page a horizontal scrollbar on a phone. */
+  overflow-wrap: break-word;
+}
+@media (width >= 40rem) {
+  .prose { font-size: var(--text-lg); }
 }
 .prose > * + * { margin-block-start: 1.5em; }
 .prose h2 {
   font-size: var(--text-2xl);
   margin-block-start: 2.5em;
   margin-block-end: -0.35em;
-  scroll-margin-top: 5rem;
 }
 .prose h3 {
   font-size: var(--text-xl);
   margin-block-start: 2em;
   margin-block-end: -0.4em;
-  scroll-margin-top: 5rem;
 }
 .prose a {
   color: var(--accent);
@@ -153,18 +167,31 @@
   border-radius: 5px;
   padding: 0.12em 0.4em;
   font-size: 0.86em;
+  /* Held on one line where there is room; below that a long token has to be allowed
+     to break, or it overflows the column. */
   white-space: nowrap;
+}
+@media (width < 40rem) {
+  .prose :not(pre) > code {
+    white-space: normal;
+    overflow-wrap: break-word;
+  }
 }
 
 .prose pre {
   background: var(--code-bg) !important;
   border: 1px solid var(--border);
   border-radius: 10px;
-  padding: 1.1rem 1.15rem;
+  padding: 0.9rem;
   overflow-x: auto;
+  /* Momentum scrolling, and a scroll container that never drags the page with it. */
+  overscroll-behavior-x: contain;
   font-size: var(--text-sm);
   line-height: 1.7;
   tab-size: 2;
+}
+@media (width >= 40rem) {
+  .prose pre { padding: 1.1rem 1.15rem; }
 }
 .prose pre code { background: none; border: 0; padding: 0; white-space: pre; }
 
@@ -179,10 +206,18 @@ html[data-theme='dark'] .astro-code span {
 
 .prose table {
   width: 100%;
+  max-width: 100%;
   border-collapse: collapse;
   font-size: var(--text-sm);
+  /* `display: block` is what makes a table scrollable on its own; without it the
+     table sets the page width and the whole document scrolls sideways instead. */
   display: block;
   overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+.prose th, .prose td { white-space: nowrap; }
+@media (width >= 40rem) {
+  .prose th, .prose td { white-space: normal; }
 }
 .prose th, .prose td {
   border: 1px solid var(--border);
@@ -202,3 +237,13 @@ html[data-theme='dark'] .astro-code span {
   font-size: 0.7em;
 }
 :is(h2, h3):hover .heading-anchor, .heading-anchor:focus-visible { opacity: 1; }
+
+/* ---------- Code block copy button ---------- */
+/* Revealed on hover where there is a pointer that can hover; permanently visible on a
+   touch screen, which has no hover state and would otherwise never show the button. */
+.code-copy { transition: opacity 150ms ease; }
+@media (hover: hover) and (pointer: fine) {
+  .code-copy { opacity: 0; }
+  .code-block:hover .code-copy,
+  .code-copy:focus-visible { opacity: 1; }
+}

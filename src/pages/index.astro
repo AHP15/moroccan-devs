@@ -9,7 +9,7 @@ const posts = withFeaturedFirst(await getPublishedPosts());
 ---
 
 <BaseLayout title={`${SITE.name} — ${SITE.taglineAr}`} description={SITE.descriptionAr}>
-  <section class="mx-auto max-w-3xl px-5 pt-14 pb-4">
+  <section class="mx-auto max-w-3xl px-5 pt-8 pb-4 sm:pt-14">
     <h1 class="m-0 mb-4 text-3xl leading-tight font-bold sm:text-4xl">
       {SITE.taglineAr}
     </h1>

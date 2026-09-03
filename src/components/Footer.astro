@@ -16,10 +16,10 @@ const links = [
     <p class="m-0">
       © {year} <bdi dir="ltr">{SITE.name}</bdi> — {SITE.taglineAr}
     </p>
-    <ul class="m-0 flex list-none gap-4 p-0">
+    <ul class="m-0 -my-1 flex list-none flex-wrap gap-x-4 p-0">
       {links.map((l) => (
         <li>
-          <a class="text-[var(--fg-muted)] no-underline transition-colors hover:text-[var(--accent)]" href={l.href} dir="ltr">{l.label}</a>
+          <a class="inline-block py-1.5 text-[var(--fg-muted)] no-underline transition-colors hover:text-[var(--accent)]" href={l.href} dir="ltr">{l.label}</a>
         </li>
       ))}
     </ul>

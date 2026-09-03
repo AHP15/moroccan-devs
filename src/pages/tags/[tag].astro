@@ -21,9 +21,9 @@ const { tag, posts } = Astro.props as Props;
   title={`${tag} — ${SITE.name}`}
   description={`مقالات بالعربية حول ${tag}.`}
 >
-  <section class="mx-auto max-w-3xl px-5 pt-14">
-    <p class="m-0 mb-1 text-sm text-[var(--fg-subtle)]">
-      <a href="/tags" class="text-[var(--fg-subtle)] no-underline hover:text-[var(--accent)]">المواضيع</a>
+  <section class="mx-auto max-w-3xl px-5 pt-8 sm:pt-14">
+    <p class="m-0 -mt-1 mb-0.5 text-sm text-[var(--fg-subtle)]">
+      <a href="/tags" class="inline-block py-1 text-[var(--fg-subtle)] no-underline hover:text-[var(--accent)]">المواضيع</a>
     </p>
     <h1 class="m-0 mb-2 text-3xl font-bold">{tag}</h1>
     <p class="m-0 text-[var(--fg-muted)]">{posts.length} مقال</p>
