@@ -1,0 +1,16 @@
+{
+  "name": "MoroccanDevs — محتوى تقني بالعربية",
+  "short_name": "MoroccanDevs",
+  "description": "دروس ومقالات تقنية بالعربية حول واجهات برمجة التطبيقات، واستخراج بيانات الويب، وتحليل نتائج محرّكات البحث العربية.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fbfaf8",
+  "theme_color": "#6169ee",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

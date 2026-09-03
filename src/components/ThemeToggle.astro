@@ -1,7 +1,17 @@
+---
+interface Props { class?: string }
+const { class: className } = Astro.props;
+---
+
+{/* `shrink-0` matters: without it the flex header squashes the button to a sliver
+    on narrow screens instead of letting the row wrap. */}
 <button
   id="theme-toggle"
   type="button"
-  class="grid size-9 place-items-center rounded-lg border border-[var(--border)] bg-[var(--bg-raised)] text-[var(--fg-muted)] transition-colors hover:text-[var(--fg)] hover:border-[var(--border-strong)]"
+  class:list={[
+    'grid size-9 shrink-0 place-items-center rounded-lg border border-[var(--border)] bg-[var(--bg-raised)] text-[var(--fg-muted)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--fg)]',
+    className,
+  ]}
   aria-label="تبديل المظهر الداكن"
 >
   <svg class="size-[18px] dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">

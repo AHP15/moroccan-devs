@@ -26,7 +26,7 @@ const fmt = (n: number) => new Intl.NumberFormat('en').format(n);
   lang="en"
   noindex
 >
-  <div class="mx-auto max-w-3xl px-5 pt-14 pb-4">
+  <div class="mx-auto max-w-3xl px-5 pt-8 pb-4 sm:pt-14">
     <!-- ---------- Header ---------- -->
     <header class="border-b border-[var(--border)] pb-10">
       <p class="m-0 mb-3 text-xs font-semibold tracking-[0.12em] text-[var(--accent)] uppercase">
@@ -68,7 +68,7 @@ const fmt = (n: number) => new Intl.NumberFormat('en').format(n);
             href={fact.source.url}
             target="_blank"
             rel="noopener noreferrer"
-            class="mt-2 inline-block text-[13px] text-[var(--fg-subtle)] underline underline-offset-2 hover:text-[var(--accent)]"
+            class="mt-1 inline-block py-1 text-[13px] text-[var(--fg-subtle)] underline underline-offset-2 hover:text-[var(--accent)]"
           >{fact.source.label}</a>
         </div>
       ))}

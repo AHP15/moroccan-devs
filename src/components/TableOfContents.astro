@@ -12,12 +12,12 @@ const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
     <h2 id="toc-heading" class="m-0 mb-3 text-sm font-semibold tracking-wide text-[var(--fg-subtle)] uppercase">
       {UI_AR.toc}
     </h2>
-    <ul class="m-0 list-none space-y-1.5 p-0 text-[15px]">
+    <ul class="m-0 list-none space-y-0.5 p-0 text-[15px]">
       {items.map((h) => (
         <li class:list={[h.depth === 3 && 'ps-5']}>
           <a
             href={`#${h.slug}`}
-            class="text-[var(--fg-muted)] no-underline transition-colors hover:text-[var(--accent)] aria-[current=true]:font-semibold aria-[current=true]:text-[var(--accent)]"
+            class="block py-1 text-[var(--fg-muted)] no-underline transition-colors hover:text-[var(--accent)] aria-[current=true]:font-semibold aria-[current=true]:text-[var(--accent)]"
           >{h.text}</a>
         </li>
       ))}
@@ -29,6 +29,7 @@ const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
   // Highlight the heading currently in view. Cheap, no library, degrades to a plain list.
   const links = document.querySelectorAll<HTMLAnchorElement>('.toc a');
   if (links.length) {
+    const headerHeight = Math.round(document.querySelector('header')?.getBoundingClientRect().height ?? 64);
     const byId = new Map([...links].map((a) => [decodeURIComponent(a.hash.slice(1)), a]));
     const targets = [...byId.keys()]
       .map((id) => document.getElementById(id))
@@ -43,7 +44,9 @@ const items = headings.filter((h) => h.depth === 2 || h.depth === 3);
           break;
         }
       },
-      { rootMargin: '-80px 0px -70% 0px', threshold: 0 },
+      // The header is two rows tall on a phone and one on a laptop, so the offset is
+      // measured rather than assumed.
+      { rootMargin: `-${headerHeight + 16}px 0px -70% 0px`, threshold: 0 },
     );
     targets.forEach((t) => observer.observe(t));
   }

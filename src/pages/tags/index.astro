@@ -7,7 +7,7 @@ const tags = await getAllTags();
 ---
 
 <BaseLayout title={`المواضيع — ${SITE.name}`} description="كل المواضيع التقنية المتناولة في المدوّنة.">
-  <section class="mx-auto max-w-3xl px-5 pt-14">
+  <section class="mx-auto max-w-3xl px-5 pt-8 sm:pt-14">
     <h1 class="m-0 mb-6 text-3xl font-bold">المواضيع</h1>
     {tags.length === 0 ? (
       <p class="text-[var(--fg-muted)]">لا توجد مواضيع بعد.</p>

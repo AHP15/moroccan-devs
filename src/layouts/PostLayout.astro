@@ -51,7 +51,7 @@ const jsonLd = {
 >
   <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
 
-  <article class="mx-auto max-w-3xl px-5 pt-10 pb-4">
+  <article class="mx-auto max-w-3xl px-5 pt-6 pb-4 sm:pt-10">
     <header class="mb-8">
       <h1 class="m-0 mb-4 text-3xl leading-tight font-bold sm:text-4xl">{title}</h1>
       <p class="m-0 mb-4 text-lg leading-relaxed text-[var(--fg-muted)]">{description}</p>
@@ -113,7 +113,10 @@ const jsonLd = {
   // Copy button on every code block. Added from JS so no post has to opt in.
   document.querySelectorAll<HTMLPreElement>('.prose pre').forEach((pre) => {
     const wrapper = document.createElement('div');
-    wrapper.className = 'relative';
+    wrapper.className = 'code-block relative';
+    // The code inside is LTR, so the copy button's inline-end has to be the right edge.
+    // Left as the page's RTL, it lands on top of the first token of every line.
+    wrapper.dir = 'ltr';
     pre.parentNode?.insertBefore(wrapper, pre);
     wrapper.appendChild(pre);
 
@@ -121,10 +124,10 @@ const jsonLd = {
     btn.type = 'button';
     btn.textContent = 'نسخ';
     btn.setAttribute('aria-label', 'نسخ الكود');
+    // Visibility is CSS's job (see .code-copy in global.css): a touch screen has no
+    // hover state, so a JS mouseenter reveal left the button unreachable on a phone.
     btn.className =
-      'absolute top-2 end-2 rounded-md border border-[var(--border-strong)] bg-[var(--bg-raised)] px-2 py-1 text-xs text-[var(--fg-muted)] opacity-0 transition-opacity hover:text-[var(--fg)] focus-visible:opacity-100';
-    wrapper.addEventListener('mouseenter', () => (btn.style.opacity = '1'));
-    wrapper.addEventListener('mouseleave', () => (btn.style.opacity = '0'));
+      'code-copy absolute top-1.5 end-1.5 rounded-md border border-[var(--border-strong)] bg-[var(--bg-raised)] px-2 py-1 text-xs text-[var(--fg-muted)] hover:text-[var(--fg)]';
 
     btn.addEventListener('click', async () => {
       try {
