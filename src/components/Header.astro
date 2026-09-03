@@ -1,10 +1,17 @@
 ---
-import { SITE, NAV_AR } from '~/consts';
+import { SITE, NAV_AR, LANG_SWITCH } from '~/consts';
 import ThemeToggle from './ThemeToggle.astro';
 import Logo from './Logo.astro';
 
+interface Props {
+  /** The language of the page being rendered, so the switcher can offer the other one. */
+  lang?: 'ar' | 'en';
+}
+const { lang = 'ar' } = Astro.props;
+
 const path = Astro.url.pathname;
 const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+const otherLang = LANG_SWITCH[lang];
 ---
 
 {/*
@@ -25,14 +32,14 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     {/* Bleeds into the container padding so the row can scroll edge to edge if a
         translation ever makes the labels wider than the viewport. */}
     <nav
-      class="order-3 -mx-5 flex w-full items-center gap-1 overflow-x-auto px-5 pb-0.5 text-sm sm:order-2 sm:mx-0 sm:w-auto sm:flex-1 sm:overflow-visible sm:px-0 sm:pb-0"
+      class="order-3 -mx-5 flex w-full items-center gap-0.5 overflow-x-auto px-5 pb-0.5 text-[13px] sm:order-2 sm:mx-0 sm:w-auto sm:flex-1 sm:gap-1 sm:overflow-visible sm:px-0 sm:pb-0 sm:text-sm"
       aria-label="التنقّل الرئيسي"
     >
       {NAV_AR.map((item) => (
         <a
           href={item.href}
           class:list={[
-            'shrink-0 rounded-lg px-2.5 py-1.5 no-underline transition-colors',
+            'shrink-0 rounded-lg px-2 py-1.5 no-underline transition-colors sm:px-2.5',
             isActive(item.href)
               ? 'bg-[var(--accent-soft)] font-semibold text-[var(--accent)]'
               : 'text-[var(--fg-muted)] hover:text-[var(--fg)]',
@@ -40,6 +47,20 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
           aria-current={isActive(item.href) ? 'page' : undefined}
         >{item.label}</a>
       ))}
+
+      {/* Separated from the destinations above, because it switches language rather
+          than navigating somewhere new. `lang` and `hreflang` matter here: without
+          them a screen reader announces 'English' in an Arabic voice, and 'العربية'
+          in an English one. */}
+      <a
+        href={otherLang.href}
+        lang={otherLang.lang}
+        hreflang={otherLang.lang}
+        dir={otherLang.lang === 'ar' ? 'rtl' : 'ltr'}
+        title={otherLang.title}
+        data-umami-event={`lang-switch-${otherLang.lang}`}
+        class="ms-0.5 shrink-0 rounded-lg border border-[var(--border)] px-2 py-1.5 text-[var(--fg-muted)] no-underline transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)] sm:ms-1 sm:px-2.5"
+      >{otherLang.label}</a>
     </nav>
   </div>
 </header>

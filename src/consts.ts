@@ -34,8 +34,18 @@ export const NAV_AR = [
   { href: '/', label: 'الرئيسية' },
   { href: '/tags', label: 'المواضيع' },
   { href: '/about', label: 'من أنا' },
-  { href: '/en', label: 'English' },
 ] as const;
+
+/**
+ * The language item is a toggle, so it always points at the language you are *not*
+ * reading. As a fixed 'English -> /en' nav entry it marked itself the current page once
+ * you were on /en, and the only route back to Arabic was 'الرئيسية' — a word an English
+ * reader has no reason to recognise as the way home.
+ */
+export const LANG_SWITCH = {
+  ar: { href: '/en', label: 'English', lang: 'en', title: 'Read about this site in English' },
+  en: { href: '/', label: 'العربية', lang: 'ar', title: 'اقرأ الموقع بالعربية' },
+} as const;
 
 /** Arabic labels for post metadata, kept in one place so the register stays consistent. */
 export const UI_AR = {
